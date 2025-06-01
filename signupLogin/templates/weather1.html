@@ -43,23 +43,19 @@
   </style>
 </head>
 <body class="bg-[#f9f9f9]">
+
   <!-- Header -->
   <header class="w-full border-b border-gray-200 bg-white sticky top-0 z-50">
     <nav class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
       <div class="logo text-black text-xl tracking-wide">FARMASPHERE</div>
       <ul class="hidden md:flex space-x-6 text-sm font-medium text-gray-700">
-        <li><a href="#" data-key="navHome" class="hover:text-green-600 transition">Home</a></li>
-        <li><a href="#" data-key="navWeather" class="hover:text-green-600 transition">Weather</a></li>
-        <li><a href="#" data-key="navCrop" class="hover:text-green-600 transition">Crop Advice</a></li>
-        <li><a href="#" data-key="navSchemes" class="hover:text-green-600 transition">Schemes</a></li>
-        <li><a href="#" data-key="navTutorials" class="hover:text-green-600 transition">Tutorials</a></li>
-        <li><a href="#" data-key="navProfile" class="hover:text-green-600 transition">Profile</a></li>
+        <li><a href="#" class="hover:text-green-600 transition">Home</a></li>
+        <li><a href="#" class="hover:text-green-600 transition">Weather</a></li>
+        <li><a href="#" class="hover:text-green-600 transition">Crop Advice</a></li>
+        <li><a href="#" class="hover:text-green-600 transition">Schemes</a></li>
+        <li><a href="#" class="hover:text-green-600 transition">Tutorials</a></li>
+        <li><a href="#" class="hover:text-green-600 transition">Profile</a></li>
       </ul>
-      <select id="language-selector" class="ml-4 border border-gray-300 rounded px-2 py-1 text-sm">
-        <option value="en">English</option>
-        <option value="hi">हिन्दी</option>
-        <option value="ta">தமிழ்</option>
-      </select>
     </nav>
   </header>
 
@@ -67,10 +63,10 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
       <!-- Input Section -->
       <div class="md:col-span-1">
-        <label id="label-city" for="city" class="mb-2 block font-semibold text-gray-900">Enter a City Name</label>
+        <label for="city" class="mb-2 block font-semibold text-gray-900">Enter a City Name</label>
         <input id="city" type="text" placeholder="E.g., London, Mumbai" class="mb-4 px-3 py-2 w-full rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
         <button id="search-btn" onclick="fetchWeather()" class="mb-4 bg-blue-600 text-white py-2 px-4 w-full rounded hover:bg-blue-700 transition">Search</button>
-        <div class="line-with-text" id="or-text">or</div>
+        <div class="line-with-text">or</div>
         <button id="loc-btn" onclick="getLocationWeather()" class="bg-gray-600 text-white py-2 px-4 w-full rounded hover:bg-gray-700 transition">Use Current Location</button>
       </div>
 
@@ -98,94 +94,6 @@
 
   <script>
     const apiKey = 'd4693228a24cbd258bd1bb096e4514e2';
-
-    // Translations for static texts
-    const translations = {
-      en: {
-        navHome: "Home",
-        navWeather: "Weather",
-        navCrop: "Crop Advice",
-        navSchemes: "Schemes",
-        navTutorials: "Tutorials",
-        navProfile: "Profile",
-        enterCity: "Enter a City Name",
-        searchBtn: "Search",
-        orText: "or",
-        useLocationBtn: "Use Current Location",
-        currentTemp: "Temperature:",
-        currentWind: "Wind:",
-        currentHumidity: "Humidity:",
-        forecastTitle: "4-Day Forecast"
-      },
-      hi: {
-        navHome: "मुखपृष्ठ",
-        navWeather: "मौसम",
-        navCrop: "फसल सलाह",
-        navSchemes: "योजनाएँ",
-        navTutorials: "ट्यूटोरियल",
-        navProfile: "प्रोफ़ाइल",
-        enterCity: "शहर का नाम दर्ज करें",
-        searchBtn: "खोजें",
-        orText: "या",
-        useLocationBtn: "वर्तमान स्थान का उपयोग करें",
-        currentTemp: "तापमान:",
-        currentWind: "हवा:",
-        currentHumidity: "नमी:",
-        forecastTitle: "4-दिवसीय पूर्वानुमान"
-      },
-      ta: {
-        navHome: "முகப்பு",
-        navWeather: "வானிலை",
-        navCrop: "பயிர் ஆலோசனை",
-        navSchemes: "திட்டங்கள்",
-        navTutorials: "பாடங்கள்",
-        navProfile: "சுயவிவரம்",
-        enterCity: "ஒரு நகரத்தின் பெயரை உள்ளிடவும்",
-        searchBtn: "தேடவும்",
-        orText: "அல்லது",
-        useLocationBtn: "தற்போதைய இடத்தை பயன்படுத்தவும்",
-        currentTemp: "வெப்பநிலை:",
-        currentWind: "காற்று:",
-        currentHumidity: "ஈரப்பதம்:",
-        forecastTitle: "4-நாள் முன்னறிவு"
-      }
-    };
-
-    function translatePage(lang) {
-      // Translate nav links
-      document.querySelectorAll('ul li a[data-key]').forEach(el => {
-        const key = el.getAttribute('data-key');
-        if (translations[lang] && translations[lang][key]) {
-          el.textContent = translations[lang][key];
-        }
-      });
-
-      // Translate labels and buttons
-      document.getElementById('label-city').textContent = translations[lang].enterCity;
-      document.getElementById('search-btn').textContent = translations[lang].searchBtn;
-      document.getElementById('or-text').textContent = translations[lang].orText;
-      document.getElementById('loc-btn').textContent = translations[lang].useLocationBtn;
-
-      // Translate current weather labels by replacing the prefix but keep the value
-      const windEl = document.getElementById('current-wind');
-      const windValue = windEl.textContent.split(':')[1] || '';
-      windEl.textContent = translations[lang].currentWind + windValue;
-
-      const tempEl = document.getElementById('current-temp');
-      const tempValue = tempEl.textContent.split(':')[1] || '';
-      tempEl.textContent = translations[lang].currentTemp + tempValue;
-
-      const humidityEl = document.getElementById('current-humidity');
-      const humidityValue = humidityEl.textContent.split(':')[1] || '';
-      humidityEl.textContent = translations[lang].currentHumidity + humidityValue;
-
-      // Forecast title
-      document.getElementById('forecast-title').textContent = translations[lang].forecastTitle;
-    }
-
-    document.getElementById('language-selector').addEventListener('change', (e) => {
-      translatePage(e.target.value);
-    });
 
     function formatDate(ts) {
       const d = new Date(ts * 1000);
@@ -218,18 +126,15 @@
           const wind = currentData.wind;
           const date = new Date(currentData.dt * 1000).toISOString().split('T')[0];
 
-          const lang = document.getElementById('language-selector').value;
-
           document.getElementById('current-weather-title').textContent = `${currentData.name} (${date})`;
-          document.getElementById('current-temp').textContent = `${translations[lang].currentTemp} ${main.temp}°C`;
-          document.getElementById('current-wind').textContent = `${translations[lang].currentWind} ${wind.speed} m/s`;
-          document.getElementById('current-humidity').textContent = `${translations[lang].currentHumidity} ${main.humidity}%`;
+          document.getElementById('current-temp').textContent = `Temperature: ${main.temp}°C`;
+          document.getElementById('current-wind').textContent = `Wind: ${wind.speed} m/s`;
+          document.getElementById('current-humidity').textContent = `Humidity: ${main.humidity}%`;
 
           document.getElementById('weather-icon').src = `https://openweathermap.org/img/wn/${weather.icon}@2x.png`;
           document.getElementById('weather-icon').alt = weather.description;
-          document.getElementById('weather-desc').textContent = weather.main + ' - ' + weather.description;
+          document.getElementById('weather-desc').textContent = weather.description;
 
-          // Update forecast (pick one entry per day at 12:00 PM)
           const forecastContainer = document.getElementById('forecast');
           forecastContainer.innerHTML = '';
           const daily = forecastData.list.filter(entry => entry.dt_txt.includes("12:00:00")).slice(0, 4);
@@ -239,15 +144,13 @@
               <div class="bg-white shadow-md rounded-lg p-4 border border-gray-200 text-center">
                 <span class="font-semibold text-sm text-gray-800 block mb-1">${formatDate(entry.dt)}</span>
                 <img class="mx-auto w-10 h-10" src="https://openweathermap.org/img/wn/${entry.weather[0].icon}@2x.png" alt="${entry.weather[0].description}" />
-                <p class="text-xs text-gray-600">${translations[lang].currentTemp} ${entry.main.temp}°C</p>
-                <p class="text-xs text-gray-600">${translations[lang].currentWind} ${entry.wind.speed} M/S</p>
-                <p class="text-xs text-gray-600">${translations[lang].currentHumidity} ${entry.main.humidity}%</p>
+                <p class="text-xs text-gray-600">Temperature: ${entry.main.temp}°C</p>
+                <p class="text-xs text-gray-600">Wind: ${entry.wind.speed} M/S</p>
+                <p class="text-xs text-gray-600">Humidity: ${entry.main.humidity}%</p>
+                <p class="text-xs text-gray-700 italic">${entry.weather[0].description}</p>
               </div>
             `;
           });
-
-          // Update forecast title (in case language changed)
-          document.getElementById('forecast-title').textContent = translations[lang].forecastTitle;
 
         } else {
           alert("City not found.");
@@ -279,11 +182,11 @@
       }
     }
 
-    // Initial page setup: translate and load weather for default city "London"
+    // Initial setup
     window.onload = () => {
-      translatePage('en');
       fetchWeather('London');
     };
   </script>
+
 </body>
 </html>

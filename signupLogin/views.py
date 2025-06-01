@@ -180,9 +180,10 @@ def farmer(request):
 def user(request):
     return render(request,'user-management.html')
 
-def weathertest(request):
-    return render(request,'weathertest.html')
-    
+# def weathertest(request):
+#     return render(request,'weathertest1.html')
+def weather(request):
+    return render(request, 'weathertest.html')
 
 def fetch_weather_data(city):
     api_key = 'Yd4693228a24cbd258bd1bb096e4514e2'  # Replace with your API key
@@ -208,46 +209,3 @@ def fetch_weather_data(city):
 #     }
     
 #     return JsonResponse(data)
-# views.py
-
-
-@csrf_exempt
-def translate_text(request):
-    if request.method != "POST":
-        return JsonResponse({"error": "Invalid request"}, status=400)
-
-    try:
-        data = json.loads(request.body)
-        text = data.get("text")
-        to_lang = data.get("to")
-
-        if not text or not to_lang:
-            return JsonResponse({"error": "Missing text or language"}, status=400)
-
-        subscription_key = settings.AZURE_TRANSLATOR_KEY
-        region = settings.AZURE_TRANSLATOR_REGION
-        endpoint = settings.AZURE_TRANSLATOR_ENDPOINT  # e.g., 'https://centralindia.api.cognitive.microsofttranslator.com/'
-
-        path = '/translate'
-        constructed_url = f"{endpoint}{path}?api-version=3.0&to={to_lang}"
-
-        headers = {
-            'Ocp-Apim-Subscription-Key': subscription_key,
-            'Ocp-Apim-Subscription-Region': region,
-            'Content-type': 'application/json',
-        }
-
-        body = [{"text": text}]
-        response = requests.post(constructed_url, headers=headers, json=body)
-        result = response.json()
-
-        if response.status_code != 200:
-            return JsonResponse({"error": "Translation API failed", "details": result}, status=response.status_code)
-
-        translated = result[0]['translations'][0]['text']
-        return JsonResponse({"translated_text": translated})
-
-    except (KeyError, IndexError, json.JSONDecodeError) as e:
-        return JsonResponse({"error": "Unexpected API response", "details": str(e)}, status=500)
-    except Exception as e:
-        return JsonResponse({"error": "Internal server error", "details": str(e)}, status=500)
